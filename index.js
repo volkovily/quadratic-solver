@@ -22,6 +22,28 @@ function getInput(prompt, callback) {
   });
 }
 
+function checkFile(filePath) {
+  if (!fs.existsSync(filePath)) {
+    console.log(`Error. File '${filePath}' does not exist`);
+    process.exit(1);
+  }
+
+  const data = fs.readFileSync(filePath, "utf8").trim();
+  const [a, b, c] = data.split(/\s+/);
+
+  if (isNaN(a) || isNaN(b) || isNaN(c)) {
+    console.log(`Error. File '${filePath}' has invalid file format`);
+    process.exit(1);
+  }
+
+  if (a === "0") {
+    console.log(`Error. a cannot be 0`);
+    process.exit(1);
+  }
+
+  return [a, b, c];
+}
+
 function solveEquation(a, b, c) {
   console.log(`The equation is: (${a})x^2 + (${b})x + (${c}) = 0`);
 
@@ -56,11 +78,6 @@ if (process.argv[2] === undefined) {
 // File mode
 else {
   const filePath = process.argv[2];
-  fs.readFile(filePath, "utf8", (err, data) => {
-    if (err) throw err;
-
-    const [a, b, c] = data.trim().split(" ");
-
-    solveEquation(a, b, c);
-  });
+  const [a, b, c] = checkFile(filePath);
+  solveEquation(a, b, c);
 }
