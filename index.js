@@ -5,10 +5,21 @@ const interface = readline.createInterface({
   output: process.stdout,
 });
 
-interface.question("a = ", (a) => {
-  interface.question("b = ", (b) => {
-    interface.question("c = ", (c) => {
-      console.log(`The equation is: (${a}) x^2 + (${b}) x + (${c}) = 0`);
+function getInput(prompt, callback) {
+  interface.question(prompt, (input) => {
+    if (isNaN(input)) {
+      console.log(`Error. Expected a valid real number, got ${input} instead`);
+      getInput(prompt, callback);
+    } else {
+      callback(input);
+    }
+  });
+}
+
+getInput("a = ", (a) => {
+  getInput("b = ", (b) => {
+    getInput("c = ", (c) => {
+      console.log(`The equation is: (${a})x^2 + (${b})x + (${c}) = 0`);
 
       const discriminant = b ** 2 - 4 * a * c;
 
