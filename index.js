@@ -11,7 +11,12 @@ function getInput(prompt, callback) {
       console.log(`Error. Expected a valid real number, got ${input} instead`);
       getInput(prompt, callback);
     } else {
-      callback(input);
+      if (prompt === "a = " && input === "0") {
+        console.log(`Error. a cannot be 0`);
+        getInput(prompt, callback);
+      } else {
+        callback(input);
+      }
     }
   });
 }
